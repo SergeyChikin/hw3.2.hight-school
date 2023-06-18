@@ -57,4 +57,6 @@ public class FacultyController {
         }
         return ResponseEntity.ok(removedFaculty);
     }
+
+
 }

@@ -84,4 +84,6 @@ public class FacultyServiceTest {
         List<Faculty> b = Collections.emptyList();
         Assertions.assertIterableEquals(b, out.getFacultiesByColor("WHITE"));
     }
+
+
 }
