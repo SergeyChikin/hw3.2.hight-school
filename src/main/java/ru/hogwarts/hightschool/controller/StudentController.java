@@ -48,7 +48,7 @@ public class StudentController {
     @GetMapping("/{id}/faculty")
     public ResponseEntity<Optional<Student>> getStudentFaculty(@PathVariable("id") long id) {
         Optional<Student> studentFaculty = studentService.findFaculty(id);
-        if (studentFaculty == null) {
+        if (!studentFaculty.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(studentFaculty);
