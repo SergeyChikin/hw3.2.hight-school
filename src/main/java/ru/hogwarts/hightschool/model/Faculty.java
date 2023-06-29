@@ -14,6 +14,10 @@ public class Faculty {
     @OneToMany(mappedBy = "faculty")
     private Collection<Student> students;
 
+    public Faculty() {
+
+    }
+
     public long getId() {
         return id;
     }
@@ -36,14 +40,6 @@ public class Faculty {
 
     public void setColor(String color) {
         this.color = color;
-    }
-
-    public Collection<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(Collection<Student> students) {
-        this.students = students;
     }
 
 
