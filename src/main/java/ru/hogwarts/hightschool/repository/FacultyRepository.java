@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ru.hogwarts.hightschool.model.Faculty;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface FacultyRepository extends JpaRepository<Faculty, Long> {
 
@@ -12,4 +13,5 @@ public interface FacultyRepository extends JpaRepository<Faculty, Long> {
     Collection<Faculty> findAllByColorContainingIgnoreCaseOrNameContainingIgnoreCase(String color,
                                                                                      String name);
 
+    Faculty findFacultyByStudentsId(Long studentId);
 }

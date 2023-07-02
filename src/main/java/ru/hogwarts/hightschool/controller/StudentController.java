@@ -2,6 +2,7 @@ package ru.hogwarts.hightschool.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.hightschool.model.Faculty;
 import ru.hogwarts.hightschool.model.Student;
 import ru.hogwarts.hightschool.service.StudentService;
 
@@ -27,7 +28,7 @@ public class StudentController {
     }
 
     @GetMapping("/age/{studentAge}")
-    public ResponseEntity<Collection<Student>> getStudentByAge(@PathVariable int studentAge) {
+    public ResponseEntity<Collection<Student>> getStudentsByAge(@PathVariable int studentAge) {
         Collection<Student> result = studentService.getStudentsByAge(studentAge);
         if (result.size() == 0) {
             return ResponseEntity.notFound().build();
@@ -46,8 +47,8 @@ public class StudentController {
     }
 
     @GetMapping("/{id}/faculty")
-    public ResponseEntity<Optional<Student>> getStudentFaculty(@PathVariable("id") long id) {
-        Optional<Student> studentFaculty = studentService.findFaculty(id);
+    public ResponseEntity<Optional<Faculty>> getStudentFaculty(@PathVariable("id") long id) {
+        Optional<Faculty> studentFaculty = Optional.ofNullable(studentService.findFaculty(id));
         if (!studentFaculty.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -78,3 +79,4 @@ public class StudentController {
 
 
 }
+

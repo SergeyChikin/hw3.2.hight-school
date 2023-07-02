@@ -25,18 +25,18 @@ public class AvatarService {
 
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
-    private final StudentService studentService;
+
 
 
     public AvatarService(StudentRepository studentRepository,
-                         AvatarRepository avatarRepository,
-                         StudentService studentService) {
+                         AvatarRepository avatarRepository
+                       ) {
         this.studentRepository = studentRepository;
         this.avatarRepository = avatarRepository;
-        this.studentService = studentService;
+
     }
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
-        Student student = studentService.getStudent(studentId);
+        Student student = studentRepository.findById(studentId).get();
         Path filePath = Path.of(avatarsDir, studentId + "." + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);

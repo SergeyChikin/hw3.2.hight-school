@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @RestController
-@RequestMapping
+@RequestMapping("/avatars")
 public class AvatarController {
 
     private final AvatarService avatarService;
@@ -28,6 +28,9 @@ public class AvatarController {
 
     @PostMapping(value = "/{studentId}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
+        if (avatar.getSize() > 1024 * 700) {
+            return ResponseEntity.badRequest().body("File is too big");
+        }
         avatarService.uploadAvatar(studentId, avatar);
         return ResponseEntity.ok().build();
     }
