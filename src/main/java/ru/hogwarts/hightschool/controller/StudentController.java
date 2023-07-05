@@ -78,5 +78,23 @@ public class StudentController {
     }
 
 
+
+    // Возможность получить количество всех студентов в школе.
+    @GetMapping("/total-number")
+    public Integer getTotalNumberOfStudents() {
+        return studentService.getTotalNumber();
+    }
+
+    // Возможность получить средний возраст студентов.
+    @GetMapping("/average-age")
+    public Double getAverageAgeOfStudents() {
+        return studentService.getAverageAge();
+    }
+
+    //Возможность получать только пять последних студентов.
+    @GetMapping("last-five")
+    public Collection<Student> getLastFiveStudents() {
+        return studentService.getLastFive();
+    }
 }
 
