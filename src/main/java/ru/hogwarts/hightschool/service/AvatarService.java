@@ -96,4 +96,5 @@ public class AvatarService {
                 .map(Avatar::getFilePath)
                 .collect(Collectors.toList());
     }
+
 }
