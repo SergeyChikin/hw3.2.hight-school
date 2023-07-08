@@ -7,4 +7,4 @@ ON student.faculty_id = faculty.id;
 SELECT student.*
 FROM student
 INNER JOIN avatar
-ON avatar.student_id = student_id;
+ON avatar.student_id = student.id;

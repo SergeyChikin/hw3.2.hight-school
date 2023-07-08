@@ -180,5 +180,4 @@ public class FacultyControllerTest {
                 .andExpect(jsonPath("$.[1].color").value(faculty1.getColor()));
     }
 
-
 }

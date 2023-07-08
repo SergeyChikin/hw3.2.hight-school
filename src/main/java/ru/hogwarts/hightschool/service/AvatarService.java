@@ -39,8 +39,8 @@ public class AvatarService {
                        ) {
         this.studentRepository = studentRepository;
         this.avatarRepository = avatarRepository;
-
     }
+
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
         Student student = studentRepository.findById(studentId).get();
         Path filePath = Path.of(avatarsDir, studentId + "." + getExtensions(avatarFile.getOriginalFilename()));
@@ -59,16 +59,20 @@ public class AvatarService {
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(avatarFile.getSize());
         avatar.setMediaType(avatarFile.getContentType());
-        avatar.setData(avatarFile.getBytes());
+        avatar.setData(generateSmallAvatar(filePath));
+
         avatarRepository.save(avatar);
     }
     private String getExtensions(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
-    public Avatar findAvatar(Long avatarId) {
-        return avatarRepository.findById(avatarId).orElse(new Avatar());
+
+    public Avatar findAvatar(Long studentId) {
+        return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
+
+
 
 
     private byte[] generateSmallAvatar(Path filePath) throws IOException {

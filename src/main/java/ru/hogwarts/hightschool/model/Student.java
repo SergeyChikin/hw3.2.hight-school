@@ -15,7 +15,7 @@ public class Student {
     private Faculty faculty;
 
     public Student() {
-
+        this(0,"", 0, null);
     }
 
     public Student(long id, String name, int age, Faculty faculty) {
@@ -23,6 +23,16 @@ public class Student {
         this.name = name;
         this.age = age;
         this.faculty = faculty;
+    }
+
+    public Student(long id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    public Student(String name, int age) {
+        this(0, name, age, null);
     }
 
     public long getId() {
@@ -63,12 +73,12 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return id == student.id && age == student.age && Objects.equals(name, student.name) && Objects.equals(faculty, student.faculty);
+        return id == student.id && age == student.age && Objects.equals(name, student.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age, faculty);
+        return Objects.hash(id, name, age);
     }
 
     @Override
