@@ -1,5 +1,7 @@
 package ru.hogwarts.hightschool.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,8 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Transactional
 public class AvatarService {
 
+    private static final Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
 
@@ -42,6 +46,7 @@ public class AvatarService {
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.info("Was invoked method uploadAvatar with parameters");
         Student student = studentRepository.findById(studentId).get();
         Path filePath = Path.of(avatarsDir, studentId + "." + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -69,6 +74,7 @@ public class AvatarService {
 
 
     public Avatar findAvatar(Long studentId) {
+        logger.info("Was invoked method findAvatar with id student = {}", studentId);
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
@@ -95,6 +101,7 @@ public class AvatarService {
 
 
     public List<String> getAvatarsList(int pageNumber, int pageSize) {
+        logger.info("Was invoked method getAvatarsList");
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return avatarRepository.findAll(pageRequest).stream()
                 .map(Avatar::getFilePath)
