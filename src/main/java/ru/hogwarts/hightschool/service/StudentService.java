@@ -8,7 +8,9 @@ import ru.hogwarts.hightschool.model.Student;
 import ru.hogwarts.hightschool.repository.FacultyRepository;
 import ru.hogwarts.hightschool.repository.StudentRepository;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -89,4 +91,25 @@ public class StudentService {
         logger.info("Was invoked method getLastFive");
         return studentRepository.getLastFiveStudents();
     }
+
+    public Collection<Student> findEveryoneWhoseNameOnA() {
+        logger.info("Was invoked method findEveryoneWhoseNameOnA");
+        return  studentRepository.findAll().stream()
+                .filter(student -> student.getName()
+                        .toUpperCase()
+                        .startsWith("А"))
+//                "А" - кириллица( как и в БД);
+                .sorted(Comparator.comparing(Student :: getName))
+                .collect(Collectors.toList());
+    }
+
+
+    public Double getAverageAgeStream() {
+        logger.info("Was invoked method getAverageAgeStream");
+        return studentRepository.findAll().stream()
+                .mapToDouble(Student::getAge)
+                .average()
+                .orElse(0.0);
+    }
+
 }

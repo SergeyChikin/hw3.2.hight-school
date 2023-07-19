@@ -92,9 +92,26 @@ public class StudentController {
     }
 
     //Возможность получать только пять последних студентов.
-    @GetMapping("last-five")
+    @GetMapping("/last-five")
     public Collection<Student> getLastFiveStudents() {
         return studentService.getLastFive();
+    }
+
+    //Эндпоинт, кот. возвр. всех студентов в алф. порядке, в верхнем регистре,
+    // чьё имя на "А".
+    @GetMapping("/find-students-on-a")
+    public ResponseEntity<Collection<Student>> findEveryoneWhoseNameOnA() {
+        Collection<Student> result = studentService.findEveryoneWhoseNameOnA();
+        if (result.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(result);
+    }
+
+//    Создать эндпоинт, который будет возвращать средний возраст всех студентов.
+    @GetMapping("/average-age-stream")
+    public Double getAverageAgeStream() {
+        return studentService.getAverageAgeStream();
     }
 }
 

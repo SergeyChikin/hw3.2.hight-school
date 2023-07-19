@@ -57,7 +57,7 @@ public class FacultyController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<Collection<Faculty>> getByColorOrName(@RequestParam String colorOrName){
+    public ResponseEntity<Collection<Faculty>> getByColorOrName(@RequestParam String colorOrName) {
         Collection<Faculty> result = facultyService.getByColorOrName(colorOrName);
         if (result.size() == 0) {
             return ResponseEntity.notFound().build();
@@ -66,13 +66,17 @@ public class FacultyController {
     }
 
     @GetMapping("/{id}/students")
-    public ResponseEntity<Collection<Student>> getStudentsByFaculty(@PathVariable("id")  long id) {
-        Collection<Student>  studentsFaculty = facultyService.getStudents(id);
+    public ResponseEntity<Collection<Student>> getStudentsByFaculty(@PathVariable("id") long id) {
+        Collection<Student> studentsFaculty = facultyService.getStudents(id);
         if (studentsFaculty == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(studentsFaculty);
     }
 
-
+//    Создать эндпоинт, который будет возвращать самое длинное название факультета.
+    @GetMapping("/get-longer-name-faculty")
+    public ResponseEntity<String> getLongerNameFaculty() {
+        return ResponseEntity.ok(facultyService.getLongerNameFaculty());
+    }
 }
