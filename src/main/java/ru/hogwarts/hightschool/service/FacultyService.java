@@ -1,47 +1,80 @@
 package ru.hogwarts.hightschool.service;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.hightschool.model.Faculty;
+import ru.hogwarts.hightschool.model.Student;
+import ru.hogwarts.hightschool.repository.FacultyRepository;
+import ru.hogwarts.hightschool.repository.StudentRepository;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.stream.Collectors;
+import java.util.Comparator;
+
 
 @Service
 public class FacultyService {
-    private final HashMap<Long, Faculty> faculties = new HashMap<>();
-    private long counterFaculty = 0L;
+
+    private static final Logger logger = LoggerFactory.getLogger(FacultyService.class);
+    private final FacultyRepository facultyRepository;
+    private final StudentRepository studentRepository;
+
+    public FacultyService(FacultyRepository facultyRepository, StudentRepository studentRepository) {
+        this.facultyRepository = facultyRepository;
+        this.studentRepository = studentRepository;
+    }
+
 
     public Faculty addFaculty(Faculty faculty) {
-        faculty.setId(++counterFaculty);
-        faculties.put(faculty.getId(), faculty);
-        return faculty;
+        logger.info("Was invoked method addFaculty with parameters");
+        return facultyRepository.save(faculty);
     }
 
     public Faculty getFaculty(long id) {
-        return faculties.get(id);
+        logger.info("Was invoked method getFaculty with id = {}", id);
+        return facultyRepository.findById(id).get();
     }
 
     public Faculty editFaculty(Faculty faculty) {
-        if (faculties.containsKey(faculty.getId())) {
-            faculties.put(faculty.getId(), faculty);
-            return faculty;
-        }
-        return null;
+        logger.info("Was invoked method editFaculty with parameters");
+        return facultyRepository.save(faculty);
     }
 
-    public Faculty deleteFaculty(long id) {
-        return faculties.remove(id);
+
+
+    public void deleteFaculty(long id) {
+        logger.info("Was invoked method deleteFaculty with id = {}", id);
+        facultyRepository.deleteById(id);
     }
 
     public Collection<Faculty> getFacultiesByColor(String color) {
-        return faculties.values().stream()
-                .filter(faculty -> faculty.getColor().equals(color))
-                .collect(Collectors.toList());
+        logger.info("Was invoked method getFacultiesByColor with color - {}", color);
+        return facultyRepository.findByColor(color);
     }
 
     public Collection<Faculty> getAllFaculties() {
-        return faculties.values();
+        logger.info("Was invoked method getAllFaculties");
+        return facultyRepository.findAll();
     }
+
+    public Collection<Faculty> getByColorOrName(String colorOrName) {
+        logger.info("Was invoked method getByColorOrName");
+        return facultyRepository.findAllByColorContainingIgnoreCaseOrNameContainingIgnoreCase(colorOrName, colorOrName);
+    }
+
+    public Collection<Student> getStudents(long id) {
+        logger.info("Was invoked method getStudents with id faculty = {}", id);
+        return studentRepository.findAllByFaculty_Id(id);
+    }
+
+    public String getLongerNameFaculty() {
+        logger.info("Was invoked method getLongerNameFaculty");
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparing(String::length))
+                .orElse(null);
+    }
+
 
 }

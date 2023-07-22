@@ -1,16 +1,31 @@
 package ru.hogwarts.hightschool.model;
 
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
-
+@Entity
+@Table(name = "faculty")
 public class Faculty {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     private String color;
+    @OneToMany(mappedBy = "faculty")
+    private Collection<Student> students;
+
+    public Faculty() {
+    this(0,"", "");
+    }
 
     public Faculty(long id, String name, String color) {
         this.id = id;
         this.name = name;
         this.color = color;
+    }
+
+    public Faculty(String name, String color) {
+        this(0, name, color);
     }
 
     public long getId() {
@@ -37,6 +52,7 @@ public class Faculty {
         this.color = color;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,7 +72,7 @@ public class Faculty {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", color='" + color + '\'' +
+                ", students=" + students +
                 '}';
     }
-
 }
