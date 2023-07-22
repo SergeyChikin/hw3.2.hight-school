@@ -1,5 +1,6 @@
 package ru.hogwarts.hightschool.service;
 
+import liquibase.pro.packaged.S;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -110,6 +111,67 @@ public class StudentService {
                 .mapToDouble(Student::getAge)
                 .average()
                 .orElse(0.0);
+    }
+
+
+    public Collection<String> getThreadNames() {
+        logger.info("Was invoked method getThreadNames");
+        List<String> threadNames = studentRepository.findAll()
+                .stream()
+                .limit(6)
+                .map(Student :: getName)
+                .collect(Collectors.toList());
+
+        System.out.println(threadNames.get(0));
+        System.out.println(threadNames.get(1));
+
+        new Thread(() -> {
+            try{
+                System.out.println(threadNames.get(2));
+                Thread.sleep(1000);
+                System.out.println(threadNames.get(3));
+            } catch (InterruptedException e){}
+        }).start();
+
+        new Thread(() -> {
+            try{
+                System.out.println(threadNames.get(2));
+                Thread.sleep(1000);
+                System.out.println(threadNames.get(3));
+            } catch (InterruptedException e){}
+        }).start();
+
+        return threadNames;
+    }
+
+    private synchronized void printNames(String name1, String name2) {
+        try {
+            System.out.println(name1);
+            Thread.sleep(1000);
+            System.out.println(name2);
+        } catch (InterruptedException e){}
+    }
+
+
+    public Collection<String> getThreadNamesSynchronized() {
+        logger.info("Was invoked method getThreadNamesSynchronized");
+        List<String> threadNames = studentRepository.findAll()
+                .stream()
+                .limit(6)
+                .map(Student :: getName)
+                .collect(Collectors.toList());
+
+        printNames(threadNames.get(0), threadNames.get(1));
+
+        new Thread(() -> {
+            printNames(threadNames.get(2), threadNames.get(3));
+        }).start();
+
+        new Thread(() -> {
+            printNames(threadNames.get(4), threadNames.get(5));
+        }).start();
+
+        return threadNames;
     }
 
 }

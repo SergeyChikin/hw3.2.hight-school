@@ -108,10 +108,23 @@ public class StudentController {
         return ResponseEntity.ok(result);
     }
 
-//    Создать эндпоинт, который будет возвращать средний возраст всех студентов.
+   //    Создать эндпоинт, который будет возвращать средний возраст всех студентов.
     @GetMapping("/average-age-stream")
     public Double getAverageAgeStream() {
         return studentService.getAverageAgeStream();
+    }
+
+
+    //    Эндпоинт, который запускает два параллельных потока для вывода имен студентов в консоль.
+    @GetMapping("/thread-names")
+    public Collection<String> getThreadNames() {
+        return studentService.getThreadNames();
+    }
+
+   //эндпоинт, который запускает два синхронизированных параллельных потока для вывода имен студентов в консоль.
+    @GetMapping("/thread-names-synchronized")
+    public Collection<String> getThreadNamesSynchronized(){
+        return studentService.getThreadNamesSynchronized();
     }
 }
 
